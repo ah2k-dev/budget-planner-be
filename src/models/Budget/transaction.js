@@ -19,8 +19,14 @@ const transactionSchema = new Schema({
     enum: ["income", "expense"],
     required: true,
   },
+  asset: {
+    type: String,
+    enum: ["savings", "account", "cash"],
+    required: true,
+  },
   description: {
     type: String,
+    default: "Miscellaneous"
   },
   user: {
     type: Schema.Types.ObjectId,
