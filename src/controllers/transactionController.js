@@ -278,6 +278,24 @@ const updateTransaction = async (req, res, next) => {
 const deleteTransaction = async (req, res, next) => {
   // #swagger.tags = ['Transaction']
   try {
+    const { id } = req.params;
+    const deleted = await Transaction.findByIdAndDelete(id);
+    await Asset.findOneAndUpdate(
+      { user: req.user._id },
+      {
+        $inc: {
+          [deleted.asset]:
+            deleted.type === "income" ? -deleted.amount : deleted.amount,
+        },
+      }
+    );
+    return SuccessHandler(
+      {
+        message: "Transaction deleted successfully",
+      },
+      200,
+      res
+    );
   } catch (error) {
     return ErrorHandler(error.message, 500, req, res);
   }
