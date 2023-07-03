@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { isAuthenticated } = require("../middleware/auth");
-const budget = require("../controllers/budgetController");
+const budget = require("../controllers/budgetController.js");
 
 
 router.route("/get").get(isAuthenticated, budget.getBudget);
