@@ -144,6 +144,28 @@ const updateBudget = async (req, res) => {
 const copyPreviousBudget = async (req, res) => {
   // #swagger.tags = ['Budget']
   try {
+    const { month } = req.body;
+    const previousBudget = await Budget.find({
+      user: req.user._id,
+      month: moment(month).startOf("month"),
+    });
+    const newBudget = previousBudget.map((budget) => {
+      return {
+        month: moment().startOf("month"),
+        category: budget.category,
+        minimumAmount: budget.minimumAmount,
+        maximumAmount: budget.maximumAmount,
+        user: req.user._id,
+      };
+    });
+    await Budget.insertMany(newBudget);
+    return SuccessHandler(
+      {
+        message: "Budget copied successfully",
+      },
+      201,
+      res
+    );
   } catch (error) {
     return ErrorHandler(error.message, 500, req, res);
   }

@@ -90,7 +90,7 @@ const addAssets = async (req, res) => {
     });
     return SuccessHandler({
       assets: updated,
-      message: "Assets updated successfully",
+      message: "Assets added successfully",
     });
   } catch (error) {
     return ErrorHandler(error.message, 500, req, res);
